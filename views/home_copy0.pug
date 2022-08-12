@@ -1,0 +1,115 @@
+doctype html
+html(class="absolute inset-0 bg-gray-50 flex overflow-hidden") 
+	head 
+		title Naval Academy
+		link(rel="stylesheet" href="./public/styles/global.css")
+		link(rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css")
+		link(rel="preconnect" href="https://fonts.googleapis.com")
+		link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+		link(href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Inconsolata:wght@200;300;400;500;600&display=swap" rel="stylesheet")
+		meta(name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, maximum-scale=1, minimal-ui")
+		// accept request from outside
+		meta(http-equiv="Content-Security-Policy" content="upgrade-insecure-requests")
+		meta(name="apple-mobile-web-app-title" content="naval-app")
+	body(class="z-10 absolute inset-0")
+		script(type="importmap").
+			{
+				"imports": {
+					"three" : "https://unpkg.com/three@0.141.0/build/three.module.js",
+					"GLTFLoader" : "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js"
+				}
+			}
+			
+		nav(class="bg-amber-400 sticky top-0 shadow-lg z-30")
+			div(class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8")
+				div(class="flex items-center h-16 justify-center sm:items-stretch")
+					div(class="flex-shrink-0 flex items-center")
+						img(class="block h-10 w-auto" src="./public/img/nalogo.svg" alt="Korean Navy")#navyLogo
+					
+							
+		
+	
+		//nav(class='z-20 relative sticky min-w-max w-screen top-0 left-0 right-0 px-4 h-16 bg-zinc-800 grid grid-cols-3 shadow-xl border-b-4 border-zinc-700')
+			div(class='text-center text-lg font-bold font-sans text-white m-4 sm:text-start') THE JAE
+			div(class='place-items-center grid sm:w-52 sm:justify-self-center')
+				input(class='rounded-lg h-8 w-28 sm:w-full border-zinc-600 border-2 bg-zinc-400 focus:outline-none indent-1.5 text-sm text-zinc-700 placeholder:text-zinc-700 placeholder:italic' placeholder='Search')
+			div(class='hidden grid flex right-0 left-10 gap-2 m-4 sm:block relative')
+				div(class="justify-self-center absolute right-8")
+					span(class='text-center px-2 text-lg font-semibold text-white') Hi
+					span(class='text-center px-2 text-lg font-semibold text-white') About
+					span(class='text-center px-2 text-lg font-semibold text-white') Menu
+			div(class="grid justify-items-end text-center m-4 text-lg font-semibold text-white")
+				div(class="px-2 sm:hidden") Menu
+	
+		
+		block content
+		
+		div(class="bg-transparent w-full sticky absolute bottom-0 z-50")
+			div(class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8")
+				div(class="flex-1 flex items-center h-32 justify-center sm:items-stretch sm:justify-end")
+					div(class="flex-shrink-0 flex items-center space-x-7")
+						canvas(id='home' class='z-50 h-28 w-28 transition ease-in-out hover:scale-125 duration-500 rounded-full')
+						//canvas(id='market' class='z-50 h-28 w-28')
+						
+
+			
+		script(src="https://unpkg.com/swiper/swiper-bundle.min.js")
+		script.
+			const logo = document.querySelector('#navyLogo')
+			logo.addEventListener('click', (e) => {
+				window.location.href = './feed'
+			})
+			var swiper = new Swiper(".card-container", {
+				navigation: {
+					nextEl: ".swiper-button-next",
+					prevEl: ".swiper-button-prev"
+				}
+			})
+			
+			setTimeout(function() {window.scrollTo(0,1)},1000)
+		
+		script(type='module').
+			//if not working, refer to "https://discourse.threejs.org/t/trouble-loading-a-gltf-file-in-mobile/16410"
+			import {GLTFLoader} from 'GLTFLoader'
+			import * as THREE from 'three'
+			
+			const home = document.querySelector('#home')
+			home.addEventListener('click', (e) => {
+				window.location.href = '/'
+			})
+			
+			
+			let homeScene = new THREE.Scene()
+			let homeRenderer = new THREE.WebGLRenderer({
+				alpha : true,
+				canvas: home,
+				//antialias : true
+			})
+			
+			let homeCamera = new THREE.PerspectiveCamera(30, 1, 0.5, 1000)
+			homeCamera.position.set(0,0,4.5)
+			
+			let light = new THREE.AmbientLight(0x404040, 4)
+			homeScene.add(light)
+			
+			
+			let loader = new GLTFLoader()
+			loader.load('./public/gltfs/house/scene.gltf', function(gltf) {
+				homeScene.add(gltf.scene)
+				function animate() {
+					requestAnimationFrame(animate)
+					gltf.scene.rotation.y += 0.01
+					homeRenderer.setClearColor(0x000000, 0)
+					homeRenderer.render(homeScene, homeCamera)
+				}
+				
+				animate()
+			})
+
+			
+		
+			
+		//img(class="block h-10 w-auto" src="https://w.namu.la/s/547c8b8781cbb79fb932dd852b9f2619aacfcd9eb2d5709d98724743c23c2102d52a22fc36245b55fa7e948f8dfc59f270dc4de3c85ccd94005e4b36a589b59c19db579419b8a06abae62c52510159bceaffd811d5e9361a8fbce44c10ef96bf" alt="Workflow")
+		//img(class="block h-10 w-auto" src="https://w.namu.la/s/547c8b8781cbb79fb932dd852b9f2619aacfcd9eb2d5709d98724743c23c2102d52a22fc36245b55fa7e948f8dfc59f270dc4de3c85ccd94005e4b36a589b59c19db579419b8a06abae62c52510159bceaffd811d5e9361a8fbce44c10ef96bf" alt="Workflow")
+	
+			

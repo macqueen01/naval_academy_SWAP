@@ -1,0 +1,9 @@
+extends home
+
+block content
+
+	div(class='grid min-h-screen place-items-center')
+			div(class='w-1/2 overflow-x-auto shadow-xl bg-white h-fit rounded-lg grid place-items-center')
+				h1= message
+				h2= error.status
+				pre #{error.stack}
